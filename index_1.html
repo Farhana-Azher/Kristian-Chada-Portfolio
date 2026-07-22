@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kristian Chada Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0F;
+    --surface:#111118;
+    --card:#16161F;
+    --border:#22222E;
+    --border-glow:#2E2E45;
+    --accent:#4ECDC4;
+    --text:#FFFFFF;
+    --muted:#C8C8D8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Outfit',sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Playfair Display',serif;font-weight:600;}
+  a{color:inherit;text-decoration:none;}
+  .noise{
+    position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .container{max-width:1200px;margin:0 auto;padding:0 40px;}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(10,10,15,.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;max-width:1200px;margin:0 auto;}
+  .nav-brand{display:flex;align-items:center;gap:18px;}
+  .tt-logo-link{display:flex;align-items:center;padding-right:18px;border-right:1px solid var(--border-glow);}
+  .tt-logo{height:38px;width:auto;display:block;opacity:1;transition:opacity .2s;}
+  .tt-logo-link:hover .tt-logo{opacity:.85;}
+  .nav-name{font-family:'Playfair Display',serif;font-size:1.1rem;letter-spacing:.5px;}
+  .nav-links{display:flex;gap:36px;font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;}
+  .nav-links a{opacity:.75;transition:opacity .2s, color .2s;}
+  .nav-links a:hover, .nav-links a.active{opacity:1;color:var(--accent);}
+  .nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;z-index:200;}
+  .nav-hamburger span{width:24px;height:2px;background:var(--text);display:block;}
+  .mobile-drawer{
+    position:fixed;inset:0;background:#0A0A0Ff2;backdrop-filter:blur(14px);
+    z-index:150;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;
+    transform:translateY(-100%);transition:transform .35s ease;
+  }
+  .mobile-drawer.open{transform:translateY(0);}
+  .mobile-drawer a{font-size:1.4rem;font-family:'Playfair Display',serif;}
+  .drawer-close{position:absolute;top:26px;right:30px;font-size:1.8rem;background:none;border:none;color:var(--text);cursor:pointer;}
+
+  /* HERO */
+  .hero{
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:140px 40px 80px;max-width:1200px;margin:0 auto;position:relative;z-index:2;
+  }
+  .hero-eyebrow{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:24px;}
+  .hero-eyebrow span:not(:last-child)::after{content:"·";color:var(--muted);margin-left:14px;}
+  .hero h1{font-size:3.4rem;line-height:1.15;max-width:820px;margin-bottom:26px;}
+  .hero h1 em{color:var(--accent);font-style:normal;}
+  .hero-summary{font-size:1.15rem;line-height:1.7;color:var(--muted);max-width:640px;margin-bottom:36px;font-weight:300;}
+  .hero-tags{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:44px;}
+  .tag{
+    padding:8px 16px;border:1px solid var(--border-glow);border-radius:100px;
+    font-size:.82rem;color:var(--muted);background:var(--surface);
+  }
+  .tag.highlight{border-color:var(--accent);color:var(--accent);}
+  .cta-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-bottom:20px;}
+  .cta-secondary{font-size:.9rem;color:var(--muted);border-bottom:1px solid var(--border-glow);padding-bottom:2px;}
+  .scroll-hint{position:absolute;bottom:20px;left:40px;font-size:.75rem;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+
+  .divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-glow),transparent);margin:0 auto;max-width:1200px;}
+
+  section{padding:110px 0;position:relative;z-index:2;}
+  .why-section-tight{padding-bottom:40px;}
+  .stats-section{padding-top:40px;}
+  .section-label{font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+  .section-title{font-size:2.1rem;max-width:640px;margin-bottom:20px;}
+  .section-sub{color:var(--muted);max-width:600px;line-height:1.7;margin-bottom:60px;}
+
+  /* SKILLS GRID */
+  .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .skill-cell{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;padding:30px 24px;
+    transition:border-color .25s, transform .25s;
+  }
+  .skill-cell:hover{border-color:var(--border-glow);transform:translateY(-4px);}
+  .skill-icon{font-size:1.8rem;margin-bottom:16px;display:block;}
+  .skill-cell h3{font-family:'Outfit',sans-serif;font-weight:600;font-size:1.02rem;margin-bottom:10px;color:var(--text);}
+  .skill-cell p{font-size:.87rem;color:var(--muted);line-height:1.6;}
+
+  /* WHY */
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .why-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:34px;}
+  .why-card .num{color:var(--accent);font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:14px;display:block;}
+  .why-card h3{font-size:1.1rem;margin-bottom:12px;color:var(--text);}
+  .why-card p{color:var(--muted);font-size:.92rem;line-height:1.7;}
+
+  /* STATS */
+  .about-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center;padding:60px 0;}
+  .stat-num{font-family:'Playfair Display',serif;font-size:2.6rem;color:var(--accent);margin-bottom:8px;}
+  .stat-label{color:var(--muted);font-size:.85rem;letter-spacing:.5px;text-transform:uppercase;}
+
+  /* CASE STUDIES */
+  .tool-case{
+    background:var(--card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:36px;
+  }
+  .tool-header{padding:34px 40px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:18px;}
+  .tool-header-left{display:flex;gap:20px;align-items:center;}
+  .tool-num{font-family:'Playfair Display',serif;color:var(--accent);font-size:1.6rem;}
+  .tool-header h3{font-size:1.4rem;color:var(--text);margin-bottom:6px;}
+  .tool-header .tagline{color:var(--muted);font-size:.92rem;}
+  .badges{display:flex;gap:8px;flex-wrap:wrap;}
+  .badge{padding:6px 14px;border:1px solid var(--border-glow);border-radius:100px;font-size:.75rem;color:var(--accent);}
+  .tool-body{display:grid;grid-template-columns:repeat(3,1fr);gap:0;}
+  .tool-col{padding:30px 34px;border-right:1px solid var(--border);}
+  .tool-col:last-child{border-right:none;}
+  .tool-col h4{font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:14px;}
+  .col-list{list-style:none;}
+  .col-list li{font-size:.87rem;color:var(--muted);line-height:1.6;margin-bottom:10px;padding-left:16px;position:relative;}
+  .col-list li::before{content:"→";position:absolute;left:0;color:var(--accent);}
+
+  /* LOGO TICKER */
+  .logo-ticker-section{padding:70px 0;}
+  .logo-ticker-section .section-label{margin-bottom:36px;}
+  .ticker-wrap{
+    width:100%;overflow:hidden;position:relative;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+    mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  }
+  .ticker-track{
+    display:flex;align-items:center;gap:64px;width:max-content;
+    animation:tickerScroll 36s linear infinite;
+  }
+  .ticker-wrap:hover .ticker-track{animation-play-state:paused;}
+  .ticker-item{
+    display:flex;align-items:center;justify-content:center;
+    height:56px;min-width:120px;opacity:1;
+  }
+  .ticker-item img{max-height:40px;max-width:150px;object-fit:contain;}
+  .ticker-item.logo-card{
+    background:#fff;border-radius:8px;padding:8px 14px;height:auto;
+    min-width:0;width:fit-content;
+    opacity:1;
+  }
+  .ticker-item.logo-card img{max-height:44px;max-width:140px;}
+  .ticker-fallback{
+    display:none;font-family:'Playfair Display',serif;font-size:1.15rem;
+    color:var(--muted);white-space:nowrap;letter-spacing:.5px;
+  }
+  @keyframes tickerScroll{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
+  }
+
+  /* FOOTER */
+  footer{padding:60px 0;border-top:1px solid var(--border);text-align:center;}
+  footer .f-name{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:14px;}
+  footer .f-links{display:flex;justify-content:center;gap:24px;font-size:.85rem;color:var(--muted);margin-bottom:16px;}
+  footer .f-links a:hover{color:var(--accent);}
+  footer .copyright{font-size:.78rem;color:#5a5a68;}
+  .footer-tt-link{color:#5a5a68;text-decoration:underline;text-underline-offset:2px;transition:color .2s;}
+  .footer-tt-link:hover{color:var(--accent);}
+
+  .back-to-top{
+    position:fixed;bottom:30px;right:30px;width:46px;height:46px;border-radius:50%;
+    background:var(--accent);color:#0A0A0F;display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;border:none;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s, transform .3s;
+    z-index:90;
+  }
+  .back-to-top.show{opacity:1;pointer-events:auto;}
+  .back-to-top:hover{transform:translateY(-3px);}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  @media (max-width:1024px){
+    .skills-grid{grid-template-columns:repeat(2,1fr);}
+    .tool-body{grid-template-columns:1fr;}
+    .tool-col{border-right:none;border-bottom:1px solid var(--border);}
+  }
+  @media (max-width:768px){
+    .container{padding:0 24px;}
+    .nav-links{display:none;}
+    .nav-hamburger{display:flex;}
+    .nav-name{font-size:.9rem;}
+    .tt-logo{height:28px;}
+    .tt-logo-link{padding-right:12px;}
+    .nav-brand{gap:12px;}
+    .hero{padding:120px 24px 60px;}
+    .hero h1{font-size:2.3rem;}
+    .why-grid{grid-template-columns:1fr;}
+    .about-strip{grid-template-columns:1fr;gap:36px;}
+    section{padding:70px 0;}
+    .tool-header{padding:26px 24px;}
+    .tool-col{padding:24px;}
+  }
+  @media (max-width:380px){
+    .hero h1{font-size:1.9rem;}
+    .stat-num{font-size:2.1rem;}
+  }
+</style>
+</head>
+<body>
+<div class="noise"></div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <a href="https://www.transformtogether.co.uk/" target="_blank" rel="noopener" class="tt-logo-link">
+        <img src="LOGO_TT.png" alt="Transform Together" class="tt-logo">
+      </a>
+      <a href="https://www.linkedin.com/in/kristian-chada-77205314a/" target="_blank" rel="noopener" class="nav-name">Kristian Chada</a>
+    </div>
+    <div class="nav-links">
+      <a href="#expertise">Expertise</a>
+      <a href="#experience">Experience</a>
+      <a href="#why">Background</a>
+    </div>
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-drawer" id="mobileDrawer">
+  <button class="drawer-close" id="drawerClose">✕</button>
+  <a href="#expertise">Expertise</a>
+  <a href="#experience">Experience</a>
+  <a href="#why">Background</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <span>Post-Merger Integration Consultant</span>
+    <span>Wealth Management & Private Banking</span>
+    <span>AI-Enabled Financial Services Transformation</span>
+  </div>
+  <h1>Integration and transformation expertise built to move wealth management through <em>complex change</em>.</h1>
+  <p class="hero-summary">An experienced consultant leading post-merger integration and transformation across global investment banks and wealth managers, including a $3.7bn merger spanning the UK, Switzerland and APAC. A delivery-focused consultant who combines rigorous programme execution with applied AI, translating complex change into measurable business value.</p>
+  <div class="hero-tags">
+    <span class="tag highlight">Post-Merger Integration</span>
+    <span class="tag highlight">Wealth Management & Private Banking</span>
+    <span class="tag highlight">Regulatory & Cross-Border Governance</span>
+    <span class="tag highlight">Benefit Realisation</span>
+    <span class="tag highlight">GenAI & Automation</span>
+    <span class="tag highlight">Front-to-Back Office Delivery</span>
+    <span class="tag highlight">Stakeholder & Executive Management</span>
+    <span class="tag highlight">Programme & PMO Leadership</span>
+  </div>
+  <div class="cta-row">
+    <a href="https://www.linkedin.com/in/kristian-chada-77205314a/" target="_blank" rel="noopener" class="cta-secondary">View LinkedIn Profile</a>
+  </div>
+  <div class="scroll-hint">Scroll ↓</div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- EXPERTISE -->
+<section id="expertise">
+  <div class="container">
+    <div class="section-label reveal">Expertise</div>
+    <h2 class="section-title reveal">Built for wealth management's most complex integration and transformation programmes</h2>
+    <p class="section-sub reveal">Nine areas of capability drawn directly from experience leading post-merger integration and AI-enabled transformation across global investment banks and wealth managers.</p>
+    <div class="skills-grid">
+      <div class="skill-cell reveal"><span class="skill-icon">🧭</span><h3>Post-Merger Integration Leadership</h3><p>Managing multi-billion-dollar integration programmes end-to-end, from business analysis and solution design through to execution.</p></div>
+      <div class="skill-cell reveal"><span class="skill-icon">🏦</span><h3>Wealth Management & Private Banking</h3><p>Chief Investment Office alignment, custody operations and investable instrument universe management through an investment bank and wealth manager merger, grounded by early-career HNW client experience.</p></div>
+      <div class="skill-cell reveal"><span class="skill-icon">🌍</span><h3>Regulatory & Cross-Border Governance</h3><p>Ensuring regulatory, legal and operational consistency across workstreams spanning the UK, Switzerland and APAC.</p></div>
+      <div class="skill-cell reveal"><span class="skill-icon">📈</span><h3>Benefit Realisation</h3><p>Defining key business outcomes and KPIs against cost saves and revenue impact, with a track record of measurable delivery.</p></div>
+      <div class="skill-cell reveal"><span class="skill-icon">⚡</span><h3>GenAI & Automation</h3><p>Applying GenAI, ML and automation to optimise processes in regulated environments, with data quality and governance built in.</p></div>
+      <div class="skill-cell reveal"><span class="skill-icon">🔗</span><h3>Front-to-Back Office Programme Scope</h3><p>Contributing across front, middle and back office functions within major integration programmes, spanning investment operations, client servicing and technology delivery.</p></div>
+      <div class="skill-cell reveal"><span class="skill-icon">🧩</span><h3>Structured Problem Solving</h3><p>Structuring ambiguous problems into workstreams, hypotheses and actionable recommendations using a strong consulting toolkit.</p></div>
+      <div class="skill-cell reveal"><span class="skill-icon">🤝</span><h3>Stakeholder & Executive Management</h3><p>Collaborating with senior executives and investment committees to drive consensus and inform decision-making.</p></div>
+      <div class="skill-cell reveal"><span class="skill-icon">📋</span><h3>Programme & PMO Leadership</h3><p>Designing governance structures, RAID frameworks and analytics dashboards to support integration office activities.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- EXPERIENCE / CASE STUDIES -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label reveal">Engagement Highlights</div>
+    <h2 class="section-title reveal">Wealth management integration and transformation in practice</h2>
+    <p class="section-sub reveal">Three engagements chosen for their direct relevance to wealth management and large-scale, cross-border merger integration.</p>
+
+    <div class="tool-case reveal">
+      <div class="tool-header">
+        <div class="tool-header-left">
+          <span class="tool-num">01</span>
+          <div><h3>Merger Integration: Two Leading Swiss Investment Banks</h3><p class="tagline">Project Manager, KPMG</p></div>
+        </div>
+        <div class="badges"><span class="badge">Wealth Management</span><span class="badge">Post-Merger Integration</span><span class="badge">$3.7bn Merger</span></div>
+      </div>
+      <div class="tool-body">
+        <div class="tool-col"><h4>The Problem</h4><ul class="col-list"><li>A $3.7bn merger between two of the world's leading investment banks and wealth managers, both headquartered in Switzerland, needed integration across the UK, Switzerland and APAC</li><li>Over 1,000 financial products required pre-migration alignment across multiple regions</li><li>A $1bn external custody business needed alignment across P&L, regulation, IT systems, people and risk</li></ul></div>
+        <div class="tool-col"><h4>What Kristian Did</h4><ul class="col-list"><li>Managed integration efforts across multiple workstreams, ensuring regulatory, legal and operational consistency</li><li>Conducted detailed pre-migration alignment of the investable instrument universe</li><li>Acted as key delivery manager for migration cutover events across financial and client static data</li><li>Co-led alignment of the external custody business, presenting findings to the president of wealth management</li><li>Designed governance structures including analytics dashboards and RAID frameworks</li></ul></div>
+        <div class="tool-col"><h4>The Impact</h4><ul class="col-list"><li>$3.6 million in cost savings delivered through operational and technological alignment</li><li>Operational alignment of the Chief Investment Office across two leading Swiss investment banks</li><li>A scalable, automated post-trade settlement operation established on enhanced IT infrastructure</li></ul></div>
+      </div>
+    </div>
+
+    <div class="tool-case reveal">
+      <div class="tool-header">
+        <div class="tool-header-left">
+          <span class="tool-num">02</span>
+          <div><h3>$27bn Merger Integration Governance: LSEG</h3><p class="tagline">Senior Consultant, KPMG UK</p></div>
+        </div>
+        <div class="badges"><span class="badge">Cross-Border Governance</span><span class="badge">Large-Scale M&A</span><span class="badge">Regulated Environment</span></div>
+      </div>
+      <div class="tool-body">
+        <div class="tool-col"><h4>The Problem</h4><ul class="col-list"><li>LSEG's $27bn merger with Refinitiv required a $1bn restructuring change programme</li><li>Post-merger integration governance needed to operate within a highly regulated environment</li><li>Existing programmes and practices needed alignment with next-gen AI and analytics platforms</li></ul></div>
+        <div class="tool-col"><h4>What Kristian Did</h4><ul class="col-list"><li>Served as lead consultant on the $1bn restructuring change programme, delivering post-merger integration governance</li><li>Led analysis of current programmes using IBM Blueworks to map events and eliminate inefficiencies</li><li>Supported implementation of a $1bn analytics platform, connecting multiple data systems</li><li>Led a business automation unit applying Lean methodologies for operational risk reduction</li></ul></div>
+        <div class="tool-col"><h4>The Impact</h4><ul class="col-list"><li>Improved data quality and speed to market through connected data systems</li><li>AI index refactoring reduced time to market by 25% for new product development</li><li>£42.6m in cost reductions delivered through the business automation unit</li></ul></div>
+      </div>
+    </div>
+
+    <div class="tool-case reveal">
+      <div class="tool-header">
+        <div class="tool-header-left">
+          <span class="tool-num">03</span>
+          <div><h3>HNW & Private Client Wealth Management: Furnley House</h3><p class="tagline">Analyst (Early Career), Furnley House Financial Planning Partners</p></div>
+        </div>
+        <div class="badges"><span class="badge">Wealth Management</span><span class="badge">HNW Clients</span><span class="badge">Portfolio Reporting</span></div>
+      </div>
+      <div class="tool-body">
+        <div class="tool-col"><h4>The Problem</h4><ul class="col-list"><li>HNW and private clients needed clear, accurate investor documentation ahead of client meetings</li><li>Relationship and portfolio managers needed reliable support gathering and organising key documents</li><li>Fund performance and macroeconomic analysis needed to be client-ready and risk-adjusted</li></ul></div>
+        <div class="tool-col"><h4>What Kristian Did</h4><ul class="col-list"><li>Prepared investor documentation for HNW and private clients, including fund performance and risk-adjusted returns</li><li>Conducted macroeconomic analysis to support client-facing reporting</li><li>Coordinated timelines and documentation workflows with relationship and portfolio managers, ensuring materials were tracked, accurate and delivered ahead of client meeting deadlines</li></ul></div>
+        <div class="tool-col"><h4>The Impact</h4><ul class="col-list"><li>Reliable, client-ready documentation delivered consistently ahead of key client meetings</li><li>Direct grounding in the private banking client experience this mandate is built to serve</li></ul></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- LOGO TICKER -->
+<section class="logo-ticker-section">
+  <div class="container">
+    <div class="section-label reveal" style="text-align:center;">Companies & Institutions</div>
+  </div>
+  <div class="ticker-wrap reveal">
+    <div class="ticker-track">
+      <div class="ticker-item logo-card"><img src="LOGO_KPMG.png" alt="KPMG" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">KPMG</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_LSEG.png" alt="LSEG" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">LSEG</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_REFINITIV.png" alt="Refinitiv" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Refinitiv</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_BDO.png" alt="BDO" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">BDO</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_FURNLEYHOUSE.png" alt="Furnley House" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Furnley House</span></div>
+      <!-- duplicate set for seamless loop -->
+      <div class="ticker-item logo-card"><img src="LOGO_KPMG.png" alt="KPMG" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">KPMG</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_LSEG.png" alt="LSEG" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">LSEG</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_REFINITIV.png" alt="Refinitiv" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Refinitiv</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_BDO.png" alt="BDO" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">BDO</span></div>
+      <div class="ticker-item logo-card"><img src="LOGO_FURNLEYHOUSE.png" alt="Furnley House" onerror="this.style.display='none';this.nextElementSibling.style.display='inline'"><span class="ticker-fallback">Furnley House</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- WHY -->
+<section id="why" class="why-section-tight">
+  <div class="container">
+    <div class="section-label reveal">Background</div>
+    <h2 class="section-title reveal">Why Kristian is the right fit for this wealth management mandate</h2>
+    <div class="why-grid">
+      <div class="why-card reveal"><h3>Direct wealth management merger experience</h3><p>Kristian managed integration for a $3.7bn merger between a global investment bank and wealth manager, aligning the Chief Investment Office and co-leading alignment of a $1bn external custody business.</p></div>
+      <div class="why-card reveal"><h3>Large-scale, cross-border integration track record</h3><p>From multiple workstreams across the UK, Switzerland and APAC to LSEG's $27bn merger with Refinitiv, Kristian has consistently delivered integration governance in highly regulated, multi-region environments.</p></div>
+      <div class="why-card reveal"><h3>Applied AI for regulated environments</h3><p>Kristian ran AI readiness assessments and automation strategy end-to-end for businesses in regulated environments, with every build governed by defined KPIs, a measured baseline and human sign-off points.</p></div>
+      <div class="why-card reveal"><h3>A benefit-realisation mindset</h3><p>Kristian defined measurable business outcomes and KPIs from the outset of every engagement, translating complex analysis into clear, executive-ready recommendations that connected delivery directly to commercial value.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider container"></div>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="container">
+    <div class="f-name">Kristian Chada</div>
+    <div class="f-links">
+      <a href="https://www.linkedin.com/in/kristian-chada-77205314a/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+    <div class="copyright">© 2026 Kristian Chada · Prepared for client pitch by <a href="https://www.transformtogether.co.uk/" target="_blank" rel="noopener" class="footer-tt-link">Transform Together</a></div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop">↑</button>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    revealEls.forEach(el => el.classList.add('visible'));
+  }
+
+  // Nav active state
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => { if (window.scrollY >= sec.offsetTop - 140) current = sec.getAttribute('id'); });
+    navLinks.forEach(l => { l.classList.toggle('active', l.getAttribute('href') === '#' + current); });
+
+    const btt = document.getElementById('backToTop');
+    if (window.scrollY > 400) btt.classList.add('show'); else btt.classList.remove('show');
+  });
+
+  // Hamburger
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const drawer = document.getElementById('mobileDrawer');
+  const drawerClose = document.getElementById('drawerClose');
+  function openDrawer(){ drawer.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeDrawer(){ drawer.classList.remove('open'); document.body.style.overflow=''; }
+  hamburgerBtn.addEventListener('click', openDrawer);
+  drawerClose.addEventListener('click', closeDrawer);
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+
+  // Back to top
+  document.getElementById('backToTop').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+</script>
+</body>
+</html>
